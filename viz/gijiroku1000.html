@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>潜在的ディリクレ配分法(LDA)による国会会議録のトピック分析 : 正田研究室 @ 長崎大学</title>
+    <script type="text/javascript" src="../js/d3.v2.js"></script>
+    <link type="text/css" rel="stylesheet" href="bubble.css"/>
+  </head>
+  <body>
+<table style="text-align:center;border-collapse:separate;border-spacing:0;border:1px solid black;border-radius: 5px;-moz-border-radius: 5px;padding: 5px;">
+<thead><tr><th><h2>潜在的ディリクレ配分法(LDA)による国会会議録のトピック分析</h2></th></tr></thead>
+<tbody>
+<tr><th><h3>正田研究室 @ 長崎大学 (平成25年2月12日作成)</h3></th></tr>
+<tr><td><div>分析したデータ：<a href="http://lod.sfc.keio.ac.jp/challenge2012/show_status.php?id=d036">http://lod.sfc.keio.ac.jp/challenge2012/show_status.php?id=d036</a></div></td></tr>
+<tr><td><div id="chart" style="font-size:1pt;"></div></td></tr>
+<tr><td><script type="text/javascript" src="gijiroku1000.js"></script></td></tr>
+<tr><td><div style="font-size:120%;line-height:150%;letter-spacing:0.1em;">
+上の図が伝えようとしているのは，直感的に言えば「<b>戦後日本を表す千の話題</b>」です．<br />
+国会会議録を潜在的ディリクレ配分法(LDA: latent Dirichlet allocation)という手法で分析，<br />
+“全自動で”千の話題を抽出しました．<br />
+各話題は20個のキーワードで表されています．<br />
+上の図のあちこちで，同じ色で塗りつぶされた円が20個，龍のように連なっていますが，<br />
+それぞれがひとつの話題を表しています．<br />
+千の話題のなかには，“話題”というよりもむしろ，<br />
+それぞれの時代の政治家に特有の“言葉遣い”を表しているものもあります．<br />
+（パソコンのブラウザで300%程度に拡大してご覧ください．）
+</div></td></tr></tbody>
+</table>
+<div>
+<b>[専門家向け解説]</b>
+<ul>
+<li>形態素解析：上記リンク先のデータセットの発言部分をMeCabで形態素解析し，名詞・動詞・形容詞・副詞・接続詞・連体詞・感動詞を取得．活用語は原形に変換．</li>
+<li>単語の選択：データセット全体での出現頻度が「委員」という単語の頻度より大きいもの，また，頻度50未満のものを削除．</li>
+<li>文書の構成：同じ人物の連続する発言を一つの文書とみなしてまとめる．</li>
+<li>トピックモデル：各文書のTFデータを潜在的ディリクレ配分法(LDA)の観測データとする．</li>
+<li>推定方法：事後分布の推定にはcollapsed Gibbs samplingを用いる．LDAのトピック数は1,000とした．</li>
+<li>反復回数：collapsed Gibbs samplingのiteration数は1,000．つまり1,000回全データをスキャン．</li>
+<li>並列実装：MPICH2を用いて，16台のPC上で推定計算を行った．各ノード内でもOpenMPで推定計算をマルチスレッド化している．</li>
+<li>可視化：得られた1,000のトピックについて，各トピックへの割り当て頻度の高い順に20個の単語を抽出し，<a href="http://d3js.org/">D3</a>のbubble chartで可視化．</li>
+<li>チャートの見方：同じトピックに属する単語は同じ色の円内に書かれている．円の面積はトピックへの割り当て頻度を表す．</li>
+<li>（なお色の数がトピック数より少ないため同じ色だからといって同じトピックとは限らない．）</li>
+</ul>
+    </div>
+  </body>
+</html>
